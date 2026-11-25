@@ -1,0 +1,31 @@
+const toggle = document.getElementById("languageToggle");
+let currentLang = "en";
+toggle.addEventListener("click", () => {
+  currentLang = currentLang === "en" ? "ur" : "en";
+  document.documentElement.lang = currentLang;
+  document.body.classList.toggle("urdu", currentLang === "ur");
+  document.querySelectorAll("[data-en][data-ur]").forEach(el => {
+    el.innerHTML = el.dataset[currentLang];
+  });
+  toggle.textContent = currentLang === "en" ? "اردو" : "English";
+});
+const menuToggle = document.getElementById("menuToggle");
+const nav = document.getElementById("mainNav");
+menuToggle.addEventListener("click", () => {
+  const open = nav.classList.toggle("open");
+  menuToggle.setAttribute("aria-expanded", String(open));
+});
+nav.querySelectorAll("a").forEach(link => link.addEventListener("click", () => {
+  nav.classList.remove("open");
+  menuToggle.setAttribute("aria-expanded", "false");
+}));
+document.getElementById("year").textContent = new Date().getFullYear();
+document.getElementById("contactForm").addEventListener("submit", e => {
+  e.preventDefault();
+  const data = new FormData(e.currentTarget);
+  const subject = encodeURIComponent("Message for Aina Hope Foundation");
+  const body = encodeURIComponent(`Name: ${data.get("name")}\nEmail: ${data.get("email")}\n\n${data.get("message")}`);
+  // Replace this placeholder with the foundation's official email before publishing.
+  window.location.href = `mailto:YOUR-OFFICIAL-EMAIL@example.org?subject=${subject}&body=${body}`;
+  document.getElementById("formNote").textContent = "Your email app will open. Please configure the foundation's official email address in script.js before publishing.";
+});
